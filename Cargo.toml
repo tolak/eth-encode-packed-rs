@@ -11,5 +11,5 @@ keywords = ["ethereum", "eth", "abi", "solidity"]
 description = "Easy to use replica of Solidity abi.encodePacked."
 
 [dependencies]
-ethabi = "14.1.0"
+ethabi = { version = "18.0.0", default-features = false }
 hex = "0.4.3"
