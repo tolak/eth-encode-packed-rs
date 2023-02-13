@@ -12,7 +12,7 @@ description = "Easy to use replica of Solidity abi.encodePacked."
 
 [dependencies]
 ethabi = { version = "18.0.0", default-features = false }
-hex = {version = "0.4.3", default-features = false, features = ["alloc"] }
+hex = {version = "0.4.3", default-features = false }
 
 [features]
 default = [

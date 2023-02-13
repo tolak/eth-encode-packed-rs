@@ -77,7 +77,6 @@ pub mod abi {
         return res;
     }
 
-
     /// ```rust
     /// use eth_encode_packed::hex;
     /// use eth_encode_packed::SolidityDataType;
