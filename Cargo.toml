@@ -19,5 +19,6 @@ default = [
     "std",
 ]
 std = [
+    "ethabi/std",
     "hex/std",
 ]

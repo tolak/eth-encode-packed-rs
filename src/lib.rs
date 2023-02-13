@@ -95,20 +95,19 @@ pub mod abi {
     ///     SolidityDataType::Address(Address::from(address)),
     ///     SolidityDataType::Number(U256::from(1)),
     /// ];
-    /// let (_bytes, hash) = abi::encode_packed(&input);
+    /// let hash = hex::encode(&abi::encode_packed(&input));
     /// let hash = format!("0x{:}", hash);
     /// let expected = "0x000efe0000000000000000000000000000000000000000000000000000000000000fa1746869732d69732d612d73616d706c652d737472696e67d8b934580fce35a11b58c6d73adee468a2833fa80000000000000000000000000000000000000000000000000000000000000001";
     /// assert_eq!(hash, expected);
     /// ```
-    pub fn encode_packed(items: &[SolidityDataType]) -> (Vec<u8>, String) {
+    pub fn encode_packed(items: &[SolidityDataType]) -> Vec<u8> {
         let res = items.iter().fold(Vec::new(), |mut acc, i| {
             let pack = pack(i);
             acc.push(pack);
             acc
         });
         let res = res.join(&[][..]);
-        let hexed = hex::encode(&res);
-        (res, hexed)
+        res
     }
 }
 
@@ -129,7 +128,7 @@ mod tests {
             SolidityDataType::Address(Address::from(address)),
             SolidityDataType::Number(U256::from(1)),
         ];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0x000efe0000000000000000000000000000000000000000000000000000000000000fa1746869732d69732d612d73616d706c652d737472696e67d8b934580fce35a11b58c6d73adee468a2833fa80000000000000000000000000000000000000000000000000000000000000001";
         assert_eq!(hash, expected);
@@ -141,7 +140,7 @@ mod tests {
             U256::from(4001),
             TakeLastXBytes(24),
         )];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0x000fa1";
         assert_eq!(hash, expected);
@@ -150,7 +149,7 @@ mod tests {
     #[test]
     fn test_uint256() {
         let input = vec![SolidityDataType::Number(U256::from(3838110))];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0x00000000000000000000000000000000000000000000000000000000003a909e";
         assert_eq!(hash, expected);
@@ -159,7 +158,7 @@ mod tests {
     #[test]
     fn test_string() {
         let input = vec![SolidityDataType::String("this-is-a-sample-string")];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0x746869732d69732d612d73616d706c652d737472696e67";
         assert_eq!(hash, expected);
@@ -170,7 +169,7 @@ mod tests {
         let address = hex::decode("d8b934580fcE35a11B58C6D73aDeE468a2833fa8").unwrap();
         let address: [u8; 20] = address.try_into().unwrap();
         let input = vec![SolidityDataType::Address(Address::from(address))];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0xd8b934580fce35a11b58c6d73adee468a2833fa8";
         assert_eq!(hash, expected);
@@ -179,7 +178,7 @@ mod tests {
     #[test]
     fn test_bool() {
         let input = vec![SolidityDataType::Bool(false)];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0x00";
         assert_eq!(hash, expected);
@@ -191,7 +190,7 @@ mod tests {
         let bytes: [u8; 30] = bytes.try_into().unwrap();
 
         let input = vec![SolidityDataType::Bytes(&bytes)];
-        let (_bytes, hash) = abi::encode_packed(&input);
+        let hash = hex::encode(&abi::encode_packed(&input));
         let hash = format!("0x{:}", hash);
         let expected = "0xabababababababababababababababababababababababababababababab";
         assert_eq!(hash, expected);
